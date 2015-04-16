@@ -1,0 +1,946 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>CRM Façade</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme Tomorrow */
+.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}</style><style>body,
+h4,
+h5 {
+  font-family: 'Roboto' sans-serif !important;
+}
+h1,
+h2,
+h3,
+.aglio {
+  font-family: 'Raleway' sans-serif !important;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  display: none;
+}
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a,
+h5:hover a {
+  display: inline;
+}
+code {
+  color: #444;
+  background-color: #ddd;
+  font-family: 'Inconsolata' monospace !important;
+}
+a[data-target] {
+  cursor: pointer;
+}
+h4 {
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.back-to-top {
+  position: fixed;
+  z-index: 1;
+  bottom: 0px;
+  right: 24px;
+  padding: 4px 8px;
+  background-color: #eee;
+  text-decoration: none !important;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.panel {
+  overflow: hidden;
+}
+.panel-heading code {
+  margin-left: 3px;
+  color: #c7254e;
+  background-color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.panel-heading h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+a.list-group-item:hover {
+  background-color: #f8f8f8;
+  border-left: 2px solid #555;
+  padding-left: 15px;
+}
+.indent {
+  display: block;
+  text-indent: 16px;
+}
+.list-group-item {
+  padding-left: 16px;
+}
+.list-group-item .toggle .open {
+  display: block;
+}
+.list-group-item .toggle .closed {
+  display: none;
+}
+.list-group-item.collapsed .toggle .open {
+  display: none;
+}
+.list-group-item.collapsed .toggle .closed {
+  display: block;
+}
+a.list-group-item {
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+a.list-group-item.heading {
+  font-size: 15px;
+  background-color: #f5f5f5;
+}
+a.list-group-item.heading:hover {
+  background-color: #f8f8f8;
+}
+.list-group-item.collapse {
+  display: none;
+}
+.list-group-item.collapse.in {
+  display: block;
+}
+.list-group-item a span.closed {
+  display: none;
+}
+.list-group-item a span.open {
+  display: block;
+}
+.list-group-item a.collapsed span.closed {
+  display: block;
+}
+.list-group-item a.collapsed span.open {
+  display: none;
+}
+#nav {
+  width: inherit;
+  margin-top: 38px;
+  max-width: 255px;
+  top: 0;
+  bottom: 0;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+@media (max-width: 1199px) {
+  #nav {
+    max-width: 212px;
+  }
+}
+</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container-fluid"><div class="row"><div class="col-md-3"><nav id="nav" class="hidden-sm hidden-xs affix nav"><div class="list-group"><a data-toggle="collapse" data-target="#accounts-menu" href="#accounts" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Accounts</a><div id="accounts-menu" class="collapse"><a href="#accounts-account-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Account Collection</a><a href="#accounts-account-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create an Account</span></a><a href="#accounts-account-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Accounts</span></a><a href="#accounts-account" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Account</a><a href="#accounts-account-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve an Account</span></a><a href="#accounts-account-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update an Account</span></a><a href="#accounts-account-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete an Account</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#contacts-menu" href="#contacts" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Contacts</a><div id="contacts-menu" class="collapse"><a href="#contacts-contact-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Contact Collection</a><a href="#contacts-contact-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Contact</span></a><a href="#contacts-contact-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Contacts</span></a><a href="#contacts-contact" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Contact</a><a href="#contacts-contact-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Contact</span></a><a href="#contacts-contact-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Contact</span></a><a href="#contacts-contact-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Contact</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#leads-menu" href="#leads" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Leads</a><div id="leads-menu" class="collapse"><a href="#leads-lead-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Lead Collection</a><a href="#leads-lead-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Lead</span></a><a href="#leads-lead-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Leads</span></a><a href="#leads-lead" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Lead</a><a href="#leads-lead-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Lead</span></a><a href="#leads-lead-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Lead</span></a><a href="#leads-lead-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Lead</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#products-menu" href="#products" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Products</a><div id="products-menu" class="collapse"><a href="#products-product-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Product Collection</a><a href="#products-product-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Product</span></a><a href="#products-product-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Products</span></a><a href="#products-product" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Product</a><a href="#products-product-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Product</span></a><a href="#products-product-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Product</span></a><a href="#products-product-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Product</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#quotes-menu" href="#quotes" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Quotes</a><div id="quotes-menu" class="collapse"><a href="#quotes-quote-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Quote Collection</a><a href="#quotes-quote-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Quote</span></a><a href="#quotes-quote-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Quotes</span></a><a href="#quotes-quote" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Quote</a><a href="#quotes-quote-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Quote</span></a><a href="#quotes-quote-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Quote</span></a><a href="#quotes-quote-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Quote</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#users-menu" href="#users" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Users</a><div id="users-menu" class="collapse"><a href="#users-user-collection" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">User Collection</a><a href="#users-user-collection-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a User</span></a><a href="#users-user-collection-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Users</span></a><a href="#users-user" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">User</a><a href="#users-user-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a User</span></a><a href="#users-user-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a User</span></a><a href="#users-user-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a User</span></a><a href="#users-user-login" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span>User Login</a></div></div></nav></div><div class="col-md-8"><div><header><div class="page-header"><h1 id="top">CRM Façade</h1></div></header><div class="description"><p>Façade API built for connect to an <strong>Operational Controller Bridge</strong> without affecting its procedures and methods.</p>
+<h2>Navigate</h2>
+<ul>
+<li><p><a href="accounts.md">This: Accounts</a></p></li>
+<li><p><a href="contacts.md">Next: Contacts</a></p></li>
+</ul>
+</div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="accounts">Accounts&nbsp;<a href="#accounts"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="accounts-account-collection">Account Collection&nbsp;<a href="#accounts-account-collection"><i class="fa fa-link"></i></a></h4><p>A collection of accounts.</p>
+<section id="accounts-account-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create an Account</span></div><div style="float:left"><a href="#accounts-account-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/accounts</code></div></div><div class="panel-body"><p>Create a new Account object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Name</p>
+</dd><dt>website</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>http://4yopping.com</span></span><p>Website</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>hello@4yopping.com</span></span><p>Email</p>
+</dd><dt>phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Phone</p>
+</dd><dt>rating</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Acquired</span></span><p>Rating</p>
+</dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Reseller</span></span><p>Type</p>
+</dd><dt>assigned_to</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12x23</span></span><p>Assigned to user</p>
+</dd><dt>fax</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>55923898211</span></span><p>Fax</p>
+</dd><dt>phone2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5539849212</span></span><p>Secondary Phone</p>
+</dd><dt>email2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>magb@4yopping.com</span></span><p>Email</p>
+</dd><dt>industry</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Food</span></span><p>Industry</p>
+</dd><dt>annual_revenue</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>100000</span></span><p>Annual Revenue</p>
+</dd><dt>email_optout</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>false</span></span><p>Email Optout</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#e3b84a5cbd9154466e477916d7fe4dc0" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e3b84a5cbd9154466e477916d7fe4dc0" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"12x38"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"http://4yopping.com"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"hello@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Acquired"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Reseller"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"55923898211"</span></span>,
+  "<span class="hljs-attribute">phone2</span>": <span class="hljs-value"><span class="hljs-string">"5539849212"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"magb@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"100000"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x23"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#e914182c7ee84ce23a43ff618d0958a6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e914182c7ee84ce23a43ff618d0958a6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"12x38"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"http://4yopping.com"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"hello@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Acquired"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Reseller"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"55923898211"</span></span>,
+  "<span class="hljs-attribute">phone2</span>": <span class="hljs-value"><span class="hljs-string">"5539849212"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"magb@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"100000"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x23"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="accounts-account-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Accounts</span></div><div style="float:left"><a href="#accounts-account-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/accounts</code></div></div><div class="panel-body"><p>Retrieves all accounts.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#c0711d4e62aa9bfcde90ca8325c688d1" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c0711d4e62aa9bfcde90ca8325c688d1" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"12x38"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"http://4yopping.com"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"hello@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Acquired"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Reseller"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"55923898211"</span></span>,
+  "<span class="hljs-attribute">phone2</span>": <span class="hljs-value"><span class="hljs-string">"5539849212"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"magb@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"100000"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x23"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}]
+</code></pre></li></ul></section><h4 id="accounts-account">Account&nbsp;<a href="#accounts-account"><i class="fa fa-link"></i></a></h4><section id="accounts-account-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve an Account</span></div><div style="float:left"><a href="#accounts-account-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/accounts/{id}</code></div></div><div class="panel-body"><p>Returns a specific Account.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#2dbb2f085fdadcfa07287c7e361cd7a0" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2dbb2f085fdadcfa07287c7e361cd7a0" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"12x38"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"http://4yopping.com"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"hello@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Acquired"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Reseller"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"55923898211"</span></span>,
+  "<span class="hljs-attribute">phone2</span>": <span class="hljs-value"><span class="hljs-string">"5539849212"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"magb@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"100000"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x23"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="accounts-account-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update an Account</span></div><div style="float:left"><a href="#accounts-account-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/accounts/{id}</code></div></div><div class="panel-body"><p>Update a specific Account.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Name</p>
+</dd><dt>website</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>http://4yopping.com</span></span><p>Website</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>hello@4yopping.com</span></span><p>Email</p>
+</dd><dt>phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Phone</p>
+</dd><dt>rating</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Acquired</span></span><p>Rating</p>
+</dd><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Reseller</span></span><p>Type</p>
+</dd><dt>assigned_to</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12x23</span></span><p>Assigned to user</p>
+</dd><dt>fax</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>55923898211</span></span><p>Fax</p>
+</dd><dt>phone2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5539849212</span></span><p>Secondary Phone</p>
+</dd><dt>email2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>magb@4yopping.com</span></span><p>Email</p>
+</dd><dt>industry</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Food</span></span><p>Industry</p>
+</dd><dt>annual_revenue</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>100000</span></span><p>Annual Revenue</p>
+</dd><dt>email_optout</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>false</span></span><p>Email Optout</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#1600ab2fe11aa711bd3eb22f45ad652e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="1600ab2fe11aa711bd3eb22f45ad652e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"12x38"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"http://4yopping.com"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"hello@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Acquired"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Reseller"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"55923898211"</span></span>,
+  "<span class="hljs-attribute">phone2</span>": <span class="hljs-value"><span class="hljs-string">"5539849212"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"magb@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"100000"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x23"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="accounts-account-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete an Account</span></div><div style="float:left"><a href="#accounts-account-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/accounts/{id}</code></div></div><div class="panel-body"><p>Delete a specific Account.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#43b7269cdce26f596c8dab13e3ac7eda" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="43b7269cdce26f596c8dab13e3ac7eda" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>FORMAT: <span class="hljs-number">1</span>A
+Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="contacts">Contacts&nbsp;<a href="#contacts"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="contacts-contact-collection">Contact Collection&nbsp;<a href="#contacts-contact-collection"><i class="fa fa-link"></i></a></h4><p>A collection of contacts.</p>
+<section id="contacts-contact-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Contact</span></div><div style="float:left"><a href="#contacts-contact-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/contacts</code></div></div><div class="panel-body"><p>Create a new Contact object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>UHDTqUGCzDjPVyS6wR77k3Y4jFZmXYK0U</span></span><p>Access Token</p>
+</dd><dt>single</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Mr.</span></span><p>Single</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Firstname</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@doe.com</span></span><p>Email</p>
+</dd><dt>office_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Office Phone</p>
+</dd><dt>home_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Home Phone</p>
+</dd><dt>secondary_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Secondary Phone</p>
+</dd><dt>assigned_to</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12</span></span><p>Assigned to user</p>
+</dd><dt>lead_source</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Partner</span></span><p>Lead Source</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#3f801588ceeb64638190c03a258a1e14" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="3f801588ceeb64638190c03a258a1e14" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x54"</span></span>,
+  "<span class="hljs-attribute">single</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">office_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">home_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">secondary_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">lead_source</span>": <span class="hljs-value"><span class="hljs-string">"Partner"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#c402dbb19c40889f308b3666daac15d1" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c402dbb19c40889f308b3666daac15d1" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x54"</span></span>,
+  "<span class="hljs-attribute">single</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">office_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">home_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">secondary_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">lead_source</span>": <span class="hljs-value"><span class="hljs-string">"Partner"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="contacts-contact-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Contacts</span></div><div style="float:left"><a href="#contacts-contact-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/contacts</code></div></div><div class="panel-body"><p>Retrieves all contacts.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d77a6e196c76d2b2a4933b4ce1817cb3" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d77a6e196c76d2b2a4933b4ce1817cb3" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+    "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x54"</span></span>,
+    "<span class="hljs-attribute">single</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+    "<span class="hljs-attribute">office_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+    "<span class="hljs-attribute">home_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+    "<span class="hljs-attribute">secondary_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+    "<span class="hljs-attribute">lead_source</span>": <span class="hljs-value"><span class="hljs-string">"Partner"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="contacts-contact">Contact&nbsp;<a href="#contacts-contact"><i class="fa fa-link"></i></a></h4><section id="contacts-contact-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Contact</span></div><div style="float:left"><a href="#contacts-contact-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/contacts/{id}</code></div></div><div class="panel-body"><p>Returns a specific Contact.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#44fc154ea23d1602cc904b2335d81531" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="44fc154ea23d1602cc904b2335d81531" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x54"</span></span>,
+  "<span class="hljs-attribute">single</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">office_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">home_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">secondary_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">lead_source</span>": <span class="hljs-value"><span class="hljs-string">"Partner"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="contacts-contact-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Contact</span></div><div style="float:left"><a href="#contacts-contact-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/contacts/{id}</code></div></div><div class="panel-body"><p>Update a specific Contact.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>UHDTqUGCzDjPVyS6wR77k3Y4jFZmXYK0U</span></span><p>Access Token</p>
+</dd><dt>single</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Mr.</span></span><p>Single</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Firstname</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@doe.com</span></span><p>Email</p>
+</dd><dt>office_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Office Phone</p>
+</dd><dt>home_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Home Phone</p>
+</dd><dt>secondary_phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Secondary Phone</p>
+</dd><dt>assigned_to</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12</span></span><p>Assigned to user</p>
+</dd><dt>lead_source</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Partner</span></span><p>Lead Source</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#57418832538a777a03063a26b3aed4e6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="57418832538a777a03063a26b3aed4e6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x54"</span></span>,
+  "<span class="hljs-attribute">single</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">office_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">home_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">secondary_phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">lead_source</span>": <span class="hljs-value"><span class="hljs-string">"Partner"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="contacts-contact-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Contact</span></div><div style="float:left"><a href="#contacts-contact-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/contacts/{id}</code></div></div><div class="panel-body"><p>Delete a specific Contact.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#a2be0c1973362369364742ac3af5b2b1" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a2be0c1973362369364742ac3af5b2b1" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>FORMAT: <span class="hljs-number">1</span>A
+Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="leads">Leads&nbsp;<a href="#leads"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="leads-lead-collection">Lead Collection&nbsp;<a href="#leads-lead-collection"><i class="fa fa-link"></i></a></h4><p>A collection of leads.</p>
+<section id="leads-lead-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Lead</span></div><div style="float:left"><a href="#leads-lead-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/leads</code></div></div><div class="panel-body"><p>Create a new Lead object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>UHDTqUGCzDjPVyS6wR77k3Y4jFZmXYK0U</span></span><p>Access Token</p>
+</dd><dt>salutation</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Mr.</span></span><p>Salutation</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Name</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@doe.com</span></span><p>Email</p>
+</dd><dt>phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5587654321</span></span><p>Phone</p>
+</dd><dt>mobile</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Mobile</p>
+</dd><dt>assigned_to</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12x32</span></span><p>Assigned to user</p>
+</dd><dt>rating</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Active</span></span><p>Rating</p>
+</dd><dt>status</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Cold</span></span><p>Status</p>
+</dd><dt>source</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Employee</span></span><p>Source</p>
+</dd><dt>fax</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>127676172</span></span><p>Fax</p>
+</dd><dt>industry</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Banking</span></span><p>Industry</p>
+</dd><dt>website</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>www.johndoe.com</span></span><p>Website</p>
+</dd><dt>email2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john2@doe.com</span></span><p>Secondary Email</p>
+</dd><dt>email_optout</dt><dd><code>boolean</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>false</span></span><p>Email Opt-Out</p>
+</dd><dt>annual_revenue</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>1000000</span></span><p>Annual Revenue</p>
+</dd><dt>street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Rosewood Court</span></span><p>Street</p>
+</dd><dt>postal_code</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>48212</span></span><p>Postal Code</p>
+</dd><dt>country</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>United States</span></span><p>Country</p>
+</dd><dt>po_box</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>1242</span></span><p>PB Box</p>
+</dd><dt>city</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Detroit</span></span><p>City</p>
+</dd><dt>state</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Michigan</span></span><p>State</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description of lead</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#ce6ae5339cd9f9f57ae06842d3cb3578" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ce6ae5339cd9f9f57ae06842d3cb3578" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"3x21"</span></span>,
+  "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5587654321"</span></span>,
+  "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x32"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Cold"</span></span>,
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"Employee"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"127676172"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Banking"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"www.johndoe.com"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"john2@doe.com"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"1000000"</span></span>,
+  "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Rosewood Court"</span></span>,
+  "<span class="hljs-attribute">postal_code</span>": <span class="hljs-value"><span class="hljs-string">"48212"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States"</span></span>,
+  "<span class="hljs-attribute">po_box</span>": <span class="hljs-value"><span class="hljs-string">"1242"</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Detroit"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Michigan"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of lead"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#535cc441e2a26d3a701b5c369cecd476" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="535cc441e2a26d3a701b5c369cecd476" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"3x21"</span></span>,
+  "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5587654321"</span></span>,
+  "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x32"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Cold"</span></span>,
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"Employee"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"127676172"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Banking"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"www.johndoe.com"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"john2@doe.com"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"1000000"</span></span>,
+  "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Rosewood Court"</span></span>,
+  "<span class="hljs-attribute">postal_code</span>": <span class="hljs-value"><span class="hljs-string">"48212"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States"</span></span>,
+  "<span class="hljs-attribute">po_box</span>": <span class="hljs-value"><span class="hljs-string">"1242"</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Detroit"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Michigan"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of lead"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="leads-lead-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Leads</span></div><div style="float:left"><a href="#leads-lead-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/leads</code></div></div><div class="panel-body"><p>Retrieves all leads.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#95365033158ffb0272106bfcb2959fb9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="95365033158ffb0272106bfcb2959fb9" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+    "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"3x21"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5587654321"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x32"</span></span>,
+    "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Cold"</span></span>,
+    "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"Employee"</span></span>,
+    "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"127676172"</span></span>,
+    "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Banking"</span></span>,
+    "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"www.johndoe.com"</span></span>,
+    "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"john2@doe.com"</span></span>,
+    "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+    "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"1000000"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Rosewood Court"</span></span>,
+    "<span class="hljs-attribute">postal_code</span>": <span class="hljs-value"><span class="hljs-string">"48212"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States"</span></span>,
+    "<span class="hljs-attribute">po_box</span>": <span class="hljs-value"><span class="hljs-string">"1242"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Detroit"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Michigan"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of lead"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="leads-lead">Lead&nbsp;<a href="#leads-lead"><i class="fa fa-link"></i></a></h4><section id="leads-lead-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Lead</span></div><div style="float:left"><a href="#leads-lead-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/leads/{id}</code></div></div><div class="panel-body"><p>Returns a specific Lead.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#0bec3da9156c0c7e7bb1de6c2223cdd6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="0bec3da9156c0c7e7bb1de6c2223cdd6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"3x21"</span></span>,
+  "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5587654321"</span></span>,
+  "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x32"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Cold"</span></span>,
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"Employee"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"127676172"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Banking"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"www.johndoe.com"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"john2@doe.com"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"1000000"</span></span>,
+  "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Rosewood Court"</span></span>,
+  "<span class="hljs-attribute">postal_code</span>": <span class="hljs-value"><span class="hljs-string">"48212"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States"</span></span>,
+  "<span class="hljs-attribute">po_box</span>": <span class="hljs-value"><span class="hljs-string">"1242"</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Detroit"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Michigan"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of lead"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="leads-lead-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Lead</span></div><div style="float:left"><a href="#leads-lead-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/leads/{id}</code></div></div><div class="panel-body"><p>Update a specific Lead.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>UHDTqUGCzDjPVyS6wR77k3Y4jFZmXYK0U</span></span><p>Access Token</p>
+</dd><dt>salutation</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Mr.</span></span><p>Salutation</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Name</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@doe.com</span></span><p>Email</p>
+</dd><dt>phone</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5587654321</span></span><p>Phone</p>
+</dd><dt>mobile</dt><dd><code>number</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Mobile</p>
+</dd><dt>assigned_to</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>12x32</span></span><p>Assigned to user</p>
+</dd><dt>rating</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Active</span></span><p>Rating</p>
+</dd><dt>status</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Cold</span></span><p>Status</p>
+</dd><dt>source</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Employee</span></span><p>Source</p>
+</dd><dt>fax</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>127676172</span></span><p>Fax</p>
+</dd><dt>industry</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Banking</span></span><p>Industry</p>
+</dd><dt>website</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>www.johndoe.com</span></span><p>Website</p>
+</dd><dt>email2</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john2@doe.com</span></span><p>Secondary Email</p>
+</dd><dt>email_optout</dt><dd><code>boolean</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>false</span></span><p>Email Opt-Out</p>
+</dd><dt>annual_revenue</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>1000000</span></span><p>Annual Revenue</p>
+</dd><dt>street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Rosewood Court</span></span><p>Street</p>
+</dd><dt>postal_code</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>48212</span></span><p>Postal Code</p>
+</dd><dt>country</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>United States</span></span><p>Country</p>
+</dd><dt>po_box</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>1242</span></span><p>PB Box</p>
+</dd><dt>city</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Detroit</span></span><p>City</p>
+</dd><dt>state</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Michigan</span></span><p>State</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description of lead</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#c5c5ea014b458769fc41ddfffc1f13a3" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c5c5ea014b458769fc41ddfffc1f13a3" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"3x21"</span></span>,
+  "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Mr."</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@doe.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5587654321"</span></span>,
+  "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"12x32"</span></span>,
+  "<span class="hljs-attribute">rating</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Cold"</span></span>,
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"Employee"</span></span>,
+  "<span class="hljs-attribute">fax</span>": <span class="hljs-value"><span class="hljs-string">"127676172"</span></span>,
+  "<span class="hljs-attribute">industry</span>": <span class="hljs-value"><span class="hljs-string">"Banking"</span></span>,
+  "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-string">"www.johndoe.com"</span></span>,
+  "<span class="hljs-attribute">email2</span>": <span class="hljs-value"><span class="hljs-string">"john2@doe.com"</span></span>,
+  "<span class="hljs-attribute">email_optout</span>": <span class="hljs-value"><span class="hljs-string">"false"</span></span>,
+  "<span class="hljs-attribute">annual_revenue</span>": <span class="hljs-value"><span class="hljs-string">"1000000"</span></span>,
+  "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Rosewood Court"</span></span>,
+  "<span class="hljs-attribute">postal_code</span>": <span class="hljs-value"><span class="hljs-string">"48212"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States"</span></span>,
+  "<span class="hljs-attribute">po_box</span>": <span class="hljs-value"><span class="hljs-string">"1242"</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Detroit"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Michigan"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of lead"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="leads-lead-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Lead</span></div><div style="float:left"><a href="#leads-lead-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/leads/{id}</code></div></div><div class="panel-body"><p>Delete a specific Lead.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#07ed05f472bb211794b0ae4c7cf4e827" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="07ed05f472bb211794b0ae4c7cf4e827" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>FORMAT: <span class="hljs-number">1</span>A
+Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="products">Products&nbsp;<a href="#products"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="products-product-collection">Product Collection&nbsp;<a href="#products-product-collection"><i class="fa fa-link"></i></a></h4><p>A collection of products.</p>
+<section id="products-product-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Product</span></div><div style="float:left"><a href="#products-product-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/products</code></div></div><div class="panel-body"><p>Create a new Product object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>name</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Product Name</span></span><p>Name</p>
+</dd><dt>code</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>10291090212</span></span><p>Code</p>
+</dd><dt>active</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Active</p>
+</dd><dt>manufacturer</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4yopping</span></span><p>Manufacturer</p>
+</dd><dt>category</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Food</span></span><p>Category</p>
+</dd><dt>unit_price</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>100.00</span></span><p>Unit Price</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description of product</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#417e3ccc0a86aac3ece1346657d666bc" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="417e3ccc0a86aac3ece1346657d666bc" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"14x211"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Product Name"</span></span>,
+  "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"10291090212"</span></span>,
+  "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,
+  "<span class="hljs-attribute">manufacturer</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-string">"100.00"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#769c054261623deac71bc9fe28b75fc5" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="769c054261623deac71bc9fe28b75fc5" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"14x211"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Product Name"</span></span>,
+  "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"10291090212"</span></span>,
+  "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,
+  "<span class="hljs-attribute">manufacturer</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-string">"100.00"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-product-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Products</span></div><div style="float:left"><a href="#products-product-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/products</code></div></div><div class="panel-body"><p>Retrieves all products.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#5258a12479ffb66f8f9c7bf5b79c7242" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="5258a12479ffb66f8f9c7bf5b79c7242" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+    "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"14x211"</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Product Name"</span></span>,
+    "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"10291090212"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,
+    "<span class="hljs-attribute">manufacturer</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+    "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+    "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-string">"100.00"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="products-product">Product&nbsp;<a href="#products-product"><i class="fa fa-link"></i></a></h4><section id="products-product-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Product</span></div><div style="float:left"><a href="#products-product-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Returns a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#c583b06f0ed230e19b30a258dc0caf88" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c583b06f0ed230e19b30a258dc0caf88" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"14x211"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Product Name"</span></span>,
+  "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"10291090212"</span></span>,
+  "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,
+  "<span class="hljs-attribute">manufacturer</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-string">"100.00"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-product-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Product</span></div><div style="float:left"><a href="#products-product-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Update a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>name</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Product Name</span></span><p>Name</p>
+</dd><dt>code</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>10291090212</span></span><p>Code</p>
+</dd><dt>active</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Active</p>
+</dd><dt>manufacturer</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4yopping</span></span><p>Manufacturer</p>
+</dd><dt>category</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Food</span></span><p>Category</p>
+</dd><dt>unit_price</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>100.00</span></span><p>Unit Price</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description of product</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#ac4ea4febb785346c136da1b75043af5" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ac4ea4febb785346c136da1b75043af5" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"14x211"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Product Name"</span></span>,
+  "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"10291090212"</span></span>,
+  "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,
+  "<span class="hljs-attribute">manufacturer</span>": <span class="hljs-value"><span class="hljs-string">"4yopping"</span></span>,
+  "<span class="hljs-attribute">category</span>": <span class="hljs-value"><span class="hljs-string">"Food"</span></span>,
+  "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-string">"100.00"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-product-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Product</span></div><div style="float:left"><a href="#products-product-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Delete a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#4c56c39a24fe5563c591b40472984dd2" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4c56c39a24fe5563c591b40472984dd2" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>FORMAT: <span class="hljs-number">1</span>A
+Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="quotes">Quotes&nbsp;<a href="#quotes"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="quotes-quote-collection">Quote Collection&nbsp;<a href="#quotes-quote-collection"><i class="fa fa-link"></i></a></h4><p>A collection of quotes.</p>
+<section id="quotes-quote-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Quote</span></div><div style="float:left"><a href="#quotes-quote-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/quotes</code></div></div><div class="panel-body"><p>Create a new Quote object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>account_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4x701</span></span><p>Account ID</p>
+</dd><dt>product_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>14x122</span></span><p>Product ID</p>
+</dd><dt>stage</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Product Stage</span></span><p>Stage</p>
+</dd><dt>shipping</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Shipping</span></span><p>Shipping</p>
+</dd><dt>carrier</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>DHL</span></span><p>Carrier</p>
+</dd><dt>bill_street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Bill Street</span></span><p>Bill Street</p>
+</dd><dt>ship_street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Ship Street</span></span><p>Ship Street</p>
+</dd><dt>items</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;<p>}]`) … Product Items</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#0fdfee233ecbf84895c91ca796304957" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="0fdfee233ecbf84895c91ca796304957" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"4x701"</span></span>,
+  "<span class="hljs-attribute">account_id</span>": <span class="hljs-value"><span class="hljs-string">"17x109"</span></span>,
+  "<span class="hljs-attribute">product_id</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+  "<span class="hljs-attribute">stage</span>": <span class="hljs-value"><span class="hljs-string">"Product Stage"</span></span>,
+  "<span class="hljs-attribute">shipping</span>": <span class="hljs-value"><span class="hljs-string">"Shipping"</span></span>,
+  "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"DHL"</span></span>,
+  "<span class="hljs-attribute">bill_street</span>": <span class="hljs-value"><span class="hljs-string">"Bill Street"</span></span>,
+  "<span class="hljs-attribute">ship_street</span>": <span class="hljs-value"><span class="hljs-string">"Ship Street"</span></span>,
+  "<span class="hljs-attribute">items</span>": <span class="hljs-value">[{
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">productid</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+    "<span class="hljs-attribute">listprice</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">discount_percent</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">discount_amount</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet, consectetur adipisicing elit."</span></span>,
+    "<span class="hljs-attribute">comment</span>": <span class="hljs-value"><span class="hljs-string">"Quibusdam dolores sapiente distinctio quis dignissimos."</span>
+  </span>}]</span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#7d2e2fb7759685405bd0eaf20cb9c0fe" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7d2e2fb7759685405bd0eaf20cb9c0fe" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"4x701"</span></span>,
+  "<span class="hljs-attribute">account_id</span>": <span class="hljs-value"><span class="hljs-string">"17x109"</span></span>,
+  "<span class="hljs-attribute">product_id</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+  "<span class="hljs-attribute">stage</span>": <span class="hljs-value"><span class="hljs-string">"Product Stage"</span></span>,
+  "<span class="hljs-attribute">shipping</span>": <span class="hljs-value"><span class="hljs-string">"Shipping"</span></span>,
+  "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"DHL"</span></span>,
+  "<span class="hljs-attribute">bill_street</span>": <span class="hljs-value"><span class="hljs-string">"Bill Street"</span></span>,
+  "<span class="hljs-attribute">ship_street</span>": <span class="hljs-value"><span class="hljs-string">"Ship Street"</span></span>,
+  "<span class="hljs-attribute">items</span>": <span class="hljs-value">[{
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">productid</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+    "<span class="hljs-attribute">listprice</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">discount_percent</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">discount_amount</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet, consectetur adipisicing elit."</span></span>,
+    "<span class="hljs-attribute">comment</span>": <span class="hljs-value"><span class="hljs-string">"Quibusdam dolores sapiente distinctio quis dignissimos."</span>
+  </span>}]</span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quote-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Quotes</span></div><div style="float:left"><a href="#quotes-quote-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/quotes</code></div></div><div class="panel-body"><p>Retrieves all quotes.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#784c8ac8160056a76c0c8296796a9b3e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="784c8ac8160056a76c0c8296796a9b3e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+    "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"4x701"</span></span>,
+    "<span class="hljs-attribute">account_id</span>": <span class="hljs-value"><span class="hljs-string">"17x109"</span></span>,
+    "<span class="hljs-attribute">product_id</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+    "<span class="hljs-attribute">stage</span>": <span class="hljs-value"><span class="hljs-string">"Product Stage"</span></span>,
+    "<span class="hljs-attribute">shipping</span>": <span class="hljs-value"><span class="hljs-string">"Shipping"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"DHL"</span></span>,
+    "<span class="hljs-attribute">bill_street</span>": <span class="hljs-value"><span class="hljs-string">"Bill Street"</span></span>,
+    "<span class="hljs-attribute">ship_street</span>": <span class="hljs-value"><span class="hljs-string">"Ship Street"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[{
+      "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+      "<span class="hljs-attribute">productid</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+      "<span class="hljs-attribute">listprice</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+      "<span class="hljs-attribute">discount_percent</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+      "<span class="hljs-attribute">discount_amount</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+      "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet, consectetur adipisicing elit."</span></span>,
+      "<span class="hljs-attribute">comment</span>": <span class="hljs-value"><span class="hljs-string">"Quibusdam dolores sapiente distinctio quis dignissimos."</span>
+    </span>}]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="quotes-quote">Quote&nbsp;<a href="#quotes-quote"><i class="fa fa-link"></i></a></h4><section id="quotes-quote-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Quote</span></div><div style="float:left"><a href="#quotes-quote-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Returns a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#531b32d77606e496f093323af181b39f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="531b32d77606e496f093323af181b39f" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"4x701"</span></span>,
+  "<span class="hljs-attribute">account_id</span>": <span class="hljs-value"><span class="hljs-string">"17x109"</span></span>,
+  "<span class="hljs-attribute">product_id</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+  "<span class="hljs-attribute">stage</span>": <span class="hljs-value"><span class="hljs-string">"Product Stage"</span></span>,
+  "<span class="hljs-attribute">shipping</span>": <span class="hljs-value"><span class="hljs-string">"Shipping"</span></span>,
+  "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"DHL"</span></span>,
+  "<span class="hljs-attribute">bill_street</span>": <span class="hljs-value"><span class="hljs-string">"Bill Street"</span></span>,
+  "<span class="hljs-attribute">ship_street</span>": <span class="hljs-value"><span class="hljs-string">"Ship Street"</span></span>,
+  "<span class="hljs-attribute">items</span>": <span class="hljs-value">[{
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">productid</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+    "<span class="hljs-attribute">listprice</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">discount_percent</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">discount_amount</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet, consectetur adipisicing elit."</span></span>,
+    "<span class="hljs-attribute">comment</span>": <span class="hljs-value"><span class="hljs-string">"Quibusdam dolores sapiente distinctio quis dignissimos."</span>
+  </span>}]</span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quote-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Quote</span></div><div style="float:left"><a href="#quotes-quote-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Update a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>account_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4x701</span></span><p>Account ID</p>
+</dd><dt>product_id</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>14x122</span></span><p>Product ID</p>
+</dd><dt>stage</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Product Stage</span></span><p>Stage</p>
+</dd><dt>shipping</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Shipping</span></span><p>Shipping</p>
+</dd><dt>carrier</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>DHL</span></span><p>Carrier</p>
+</dd><dt>bill_street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Bill Street</span></span><p>Bill Street</p>
+</dd><dt>ship_street</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Ship Street</span></span><p>Ship Street</p>
+</dd><dt>items</dt><dd><code></code>&nbsp;<span class="required">(required)</span>&nbsp;<p>}]`) … Product Items</p>
+</dd><dt>description</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Description</span></span><p>Description</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#0de8653a572628bca890ad63dd912bb8" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="0de8653a572628bca890ad63dd912bb8" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"4x701"</span></span>,
+  "<span class="hljs-attribute">account_id</span>": <span class="hljs-value"><span class="hljs-string">"17x109"</span></span>,
+  "<span class="hljs-attribute">product_id</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+  "<span class="hljs-attribute">stage</span>": <span class="hljs-value"><span class="hljs-string">"Product Stage"</span></span>,
+  "<span class="hljs-attribute">shipping</span>": <span class="hljs-value"><span class="hljs-string">"Shipping"</span></span>,
+  "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"DHL"</span></span>,
+  "<span class="hljs-attribute">bill_street</span>": <span class="hljs-value"><span class="hljs-string">"Bill Street"</span></span>,
+  "<span class="hljs-attribute">ship_street</span>": <span class="hljs-value"><span class="hljs-string">"Ship Street"</span></span>,
+  "<span class="hljs-attribute">items</span>": <span class="hljs-value">[{
+    "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">productid</span>": <span class="hljs-value"><span class="hljs-string">"14x122"</span></span>,
+    "<span class="hljs-attribute">listprice</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">discount_percent</span>": <span class="hljs-value"><span class="hljs-string">"10"</span></span>,
+    "<span class="hljs-attribute">discount_amount</span>": <span class="hljs-value"><span class="hljs-string">"100"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet, consectetur adipisicing elit."</span></span>,
+    "<span class="hljs-attribute">comment</span>": <span class="hljs-value"><span class="hljs-string">"Quibusdam dolores sapiente distinctio quis dignissimos."</span>
+  </span>}]</span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Description of product"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quote-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Quote</span></div><div style="float:left"><a href="#quotes-quote-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Delete a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#14409792dc2a838c9ad95f205c4dd119" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="14409792dc2a838c9ad95f205c4dd119" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code>FORMAT: <span class="hljs-number">1</span>A
+Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="users">Users&nbsp;<a href="#users"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="users-user-collection">User Collection&nbsp;<a href="#users-user-collection"><i class="fa fa-link"></i></a></h4><p>A collection of users.</p>
+<section id="users-user-collection-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a User</span></div><div style="float:left"><a href="#users-user-collection-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/users</code></div></div><div class="panel-body"><p>Create a new User object.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Firstname</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@4yopping.com</span></span><p>Email</p>
+</dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4yopping</span></span><p>Password</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Phone</p>
+</dd><dt>status</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Active</span></span><p>Status</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#b9dbcbcd308e9e6b7f223a9096588829" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b9dbcbcd308e9e6b7f223a9096588829" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x34"</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#cd67150b1b3ed7becb0549950cf127ab" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="cd67150b1b3ed7becb0549950cf127ab" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x34"</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="users-user-collection-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Users</span></div><div style="float:left"><a href="#users-user-collection-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/users</code></div></div><div class="panel-body"><p>Retrieves all users.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#31f17fe4f635756d6afd1c9840384e52" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="31f17fe4f635756d6afd1c9840384e52" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+    "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x34"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="users-user">User&nbsp;<a href="#users-user"><i class="fa fa-link"></i></a></h4><section id="users-user-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a User</span></div><div style="float:left"><a href="#users-user-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/users/{id}</code></div></div><div class="panel-body"><p>Returns a specific User.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#95abfafdbe6d671d1d1f7b125672f80e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="95abfafdbe6d671d1d1f7b125672f80e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x34"</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="users-user-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a User</span></div><div style="float:left"><a href="#users-user-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/users/{id}</code></div></div><div class="panel-body"><p>Update a specific User.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd><dt>firstname</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>John</span></span><p>Firstname</p>
+</dd><dt>lastname</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Doe</span></span><p>Lastname</p>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@4yopping.com</span></span><p>Email</p>
+</dd><dt>password</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4yopping</span></span><p>Password</p>
+</dd><dt>phone</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5512345678</span></span><p>Phone</p>
+</dd><dt>status</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>Active</span></span><p>Status</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d3d6e6a0422f2e367a0ae44b29abe2d0" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d3d6e6a0422f2e367a0ae44b29abe2d0" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"54dd3d144fdbfdd5226a4ba1"</span></span>,
+  "<span class="hljs-attribute">id_crm</span>": <span class="hljs-value"><span class="hljs-string">"1x34"</span></span>,
+  "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"john@4yopping.com"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"5512345678"</span></span>,
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Active"</span></span>,
+  "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span></span>,
+  "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Feb 09 2015 12:14:13 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="users-user-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a User</span></div><div style="float:left"><a href="#users-user-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/users/{id}</code></div></div><div class="panel-body"><p>Delete a specific User.</p>
+</div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>access_token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4ec1a1c3-7b0d-49d0-bee4-b1836343ea5</span></span><p>Access Token</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong></li></ul></section><h4 id="users-user-login">User Login&nbsp;<a href="#users-user-login"><i class="fa fa-link"></i></a></h4><section id="users-user-login-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">User login</span></div><div style="float:left"><a href="#users-user-login-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/users/login</code></div></div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>email</dt><dd><code>String</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>john@doe.com</span></span><p>Email</p>
+</dd><dt>password</dt><dd><code>String</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>4yopping</span></span><p>Password</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#3f51f54beb42dc536416ae6cd569dc5a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="3f51f54beb42dc536416ae6cd569dc5a" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">access_token</span>": <span class="hljs-value"><span class="hljs-string">"4ec1a1c3-7b0d-49d0-bee4-b1836343ea5"</span>
+</span>}
+</code></pre></li></ul></section></div></div></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 15 Apr 2015</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
+
+</div></body><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script>(function() {
+  if (location.protocol === 'file:') {
+    document.getElementById('localFile').style.display = 'block';
+  }
+
+}).call(this);
+</script><script>(function() {
+  $('table').addClass('table');
+
+}).call(this);
+</script></html>

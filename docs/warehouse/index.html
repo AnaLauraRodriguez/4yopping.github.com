@@ -1,0 +1,1034 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Warehouse Façade</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme Tomorrow */
+.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}</style><style>body,
+h4,
+h5 {
+  font-family: 'Roboto' sans-serif !important;
+}
+h1,
+h2,
+h3,
+.aglio {
+  font-family: 'Raleway' sans-serif !important;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  display: none;
+}
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a,
+h5:hover a {
+  display: inline;
+}
+code {
+  color: #444;
+  background-color: #ddd;
+  font-family: 'Inconsolata' monospace !important;
+}
+a[data-target] {
+  cursor: pointer;
+}
+h4 {
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.back-to-top {
+  position: fixed;
+  z-index: 1;
+  bottom: 0px;
+  right: 24px;
+  padding: 4px 8px;
+  background-color: #eee;
+  text-decoration: none !important;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.panel {
+  overflow: hidden;
+}
+.panel-heading code {
+  margin-left: 3px;
+  color: #c7254e;
+  background-color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.panel-heading h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+a.list-group-item:hover {
+  background-color: #f8f8f8;
+  border-left: 2px solid #555;
+  padding-left: 15px;
+}
+.indent {
+  display: block;
+  text-indent: 16px;
+}
+.list-group-item {
+  padding-left: 16px;
+}
+.list-group-item .toggle .open {
+  display: block;
+}
+.list-group-item .toggle .closed {
+  display: none;
+}
+.list-group-item.collapsed .toggle .open {
+  display: none;
+}
+.list-group-item.collapsed .toggle .closed {
+  display: block;
+}
+a.list-group-item {
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+a.list-group-item.heading {
+  font-size: 15px;
+  background-color: #f5f5f5;
+}
+a.list-group-item.heading:hover {
+  background-color: #f8f8f8;
+}
+.list-group-item.collapse {
+  display: none;
+}
+.list-group-item.collapse.in {
+  display: block;
+}
+.list-group-item a span.closed {
+  display: none;
+}
+.list-group-item a span.open {
+  display: block;
+}
+.list-group-item a.collapsed span.closed {
+  display: block;
+}
+.list-group-item a.collapsed span.open {
+  display: none;
+}
+#nav {
+  width: inherit;
+  margin-top: 38px;
+  max-width: 255px;
+  top: 0;
+  bottom: 0;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+@media (max-width: 1199px) {
+  #nav {
+    max-width: 212px;
+  }
+}
+</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container-fluid"><div class="row"><div class="col-md-3"><nav id="nav" class="hidden-sm hidden-xs affix nav"><div class="list-group"><a data-toggle="collapse" data-target="#backorders-menu" href="#backorders" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Backorders</a><div id="backorders-menu" class="collapse"><a href="#backorders-backorders" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Backorders</a><a href="#backorders-backorders-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Backorder</span></a><a href="#backorders-backorders-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Backorders</span></a><a href="#backorders-backorder" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Backorder</a><a href="#backorders-backorder-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Backorder</span></a><a href="#backorders-backorder-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Backorder</span></a><a href="#backorders-backorder-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Backorder</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#customers-menu" href="#customers" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Customers</a><div id="customers-menu" class="collapse"><a href="#customers-customers" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Customers</a><a href="#customers-customers-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Customer</span></a><a href="#customers-customers-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Customers</span></a><a href="#customers-customer" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Customer</a><a href="#customers-customer-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Customer</span></a><a href="#customers-customer-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Customer</span></a><a href="#customers-customer-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Customer</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#employees-menu" href="#employees" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Employees</a><div id="employees-menu" class="collapse"><a href="#employees-employees" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Employees</a><a href="#employees-employees-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create an Employee</span></a><a href="#employees-employees-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Employees</span></a><a href="#employees-employee" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Employee</a><a href="#employees-employee-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve an Employee</span></a><a href="#employees-employee-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update an Employee</span></a><a href="#employees-employee-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete an Employee</span></a><a href="#employees-items" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Items</a><a href="#employees-items-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create an Item</span></a><a href="#employees-items-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Items</span></a><a href="#employees-item" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Item</a><a href="#employees-item-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve an Item</span></a><a href="#employees-item-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update an Item</span></a><a href="#employees-item-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete an Item</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#orders-menu" href="#orders" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Orders</a><div id="orders-menu" class="collapse"><a href="#orders-orders" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Orders</a><a href="#orders-orders-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create an Order</span></a><a href="#orders-orders-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Orders</span></a><a href="#orders-order" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Order</a><a href="#orders-order-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve an Order</span></a><a href="#orders-order-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update an Order</span></a><a href="#orders-order-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete an Order</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#picklists-menu" href="#picklists" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Picklists</a><div id="picklists-menu" class="collapse"><a href="#picklists-picklists" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Picklists</a><a href="#picklists-picklists-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Picklist</span></a><a href="#picklists-picklists-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Picklists</span></a><a href="#picklists-picklist" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Picklist</a><a href="#picklists-picklist-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Picklist</span></a><a href="#picklists-picklist-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Picklist</span></a><a href="#picklists-picklist-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Picklist</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#products-menu" href="#products" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Products</a><div id="products-menu" class="collapse"><a href="#products-products" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Products</a><a href="#products-products-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Product</span></a><a href="#products-products-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Products</span></a><a href="#products-product" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Product</a><a href="#products-product-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Product</span></a><a href="#products-product-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Product</span></a><a href="#products-product-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Product</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#warehouses-menu" href="#warehouses" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Warehouses</a><div id="warehouses-menu" class="collapse"><a href="#warehouses-warehouses" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Warehouses</a><a href="#warehouses-warehouses-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Warehouse</span></a><a href="#warehouses-warehouses-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Warehouses</span></a><a href="#warehouses-warehouse" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Warehouse</a><a href="#warehouses-warehouse-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Warehouse</span></a><a href="#warehouses-warehouse-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Warehouse</span></a><a href="#warehouses-warehouse-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Warehouse</span></a></div></div></nav></div><div class="col-md-8"><div><header><div class="page-header"><h1 id="top">Warehouse Façade</h1></div></header><div class="description"><p>Façade API built for connect to an <strong>Operational Controller Bridge</strong> without affecting its procedures and methods.</p>
+<h2>Navigate</h2>
+<ul>
+<li><p><a href="backorders.md">This: Backorders</a></p></li>
+<li><p><a href="customers.md">Next: Customers</a></p></li>
+</ul>
+</div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="backorders">Backorders&nbsp;<a href="#backorders"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><p>Backorders to generate purchase orders</p>
+<h4 id="backorders-backorders">Backorders&nbsp;<a href="#backorders-backorders"><i class="fa fa-link"></i></a></h4><p>A collection of backorders.</p>
+<section id="backorders-backorders-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Backorder</span></div><div style="float:left"><a href="#backorders-backorders-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/backorders</code></div></div><div class="panel-body"><p>Create a new Backorder object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#2d47b267c7c65d1cb2ffd544016dc70c" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2d47b267c7c65d1cb2ffd544016dc70c" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+    "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+    "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#8d8e516d4266779f056da61fd9f19514" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8d8e516d4266779f056da61fd9f19514" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+    "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+    "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="backorders-backorders-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Backorders</span></div><div style="float:left"><a href="#backorders-backorders-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/backorders</code></div></div><div class="panel-body"><p>Retrieves all backorders.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#320a78561877196761af712fe4745c26" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="320a78561877196761af712fe4745c26" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+        "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+        "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+        "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+        "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+        "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="backorders-backorder">Backorder&nbsp;<a href="#backorders-backorder"><i class="fa fa-link"></i></a></h4><section id="backorders-backorder-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Backorder</span></div><div style="float:left"><a href="#backorders-backorder-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/backorders/{id}</code></div></div><div class="panel-body"><p>Returns a specific Backorder.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#803980fd686f9f8b7c316e8abceed0ca" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="803980fd686f9f8b7c316e8abceed0ca" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+    "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+    "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="backorders-backorder-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Backorder</span></div><div style="float:left"><a href="#backorders-backorder-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/backorders/{id}</code></div></div><div class="panel-body"><p>Update a specific Backorder.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#7e2193bcc57d02f0a4ff1a418a8856fb" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7e2193bcc57d02f0a4ff1a418a8856fb" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+    "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+    "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#85976e12d55763f9043fc8fa9ed893b2" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="85976e12d55763f9043fc8fa9ed893b2" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Backorder subject example"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">amount</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+    "<span class="hljs-attribute">amount_available</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+    "<span class="hljs-attribute">priority</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="backorders-backorder-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Backorder</span></div><div style="float:left"><a href="#backorders-backorder-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/backorders/{id}</code></div></div><div class="panel-body"><p>Delete a specific Backorder.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#ed63a6b17dde824b122894d234cbbdc4" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ed63a6b17dde824b122894d234cbbdc4" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="customers">Customers&nbsp;<a href="#customers"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="customers-customers">Customers&nbsp;<a href="#customers-customers"><i class="fa fa-link"></i></a></h4><p>A collection of customers.</p>
+<section id="customers-customers-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Customer</span></div><div style="float:left"><a href="#customers-customers-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/customers</code></div></div><div class="panel-body"><p>Create a new Customer object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#5a03aa7de7d66558d73f09b36d78ac80" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="5a03aa7de7d66558d73f09b36d78ac80" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+    "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#6e8c365234ca2d7c304daa201eb88378" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="6e8c365234ca2d7c304daa201eb88378" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+    "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="customers-customers-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Customers</span></div><div style="float:left"><a href="#customers-customers-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/customers</code></div></div><div class="panel-body"><p>Retrieves all customers.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#995a6702c5a910468d004bf21cc7d898" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="995a6702c5a910468d004bf21cc7d898" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+        "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+        "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+        "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+        "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+        "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+            "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+            "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+            <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+            "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+            "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+            "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+            "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+            "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="customers-customer">Customer&nbsp;<a href="#customers-customer"><i class="fa fa-link"></i></a></h4><section id="customers-customer-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Customer</span></div><div style="float:left"><a href="#customers-customer-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/customers/{id}</code></div></div><div class="panel-body"><p>Returns a specific Customer.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#9b665b7e1aa87afde99b3727185faf37" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9b665b7e1aa87afde99b3727185faf37" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+    "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="customers-customer-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Customer</span></div><div style="float:left"><a href="#customers-customer-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/customers/{id}</code></div></div><div class="panel-body"><p>Update a specific Customer.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#7d9206cae1261a0097732a83d50c0cfa" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7d9206cae1261a0097732a83d50c0cfa" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+    "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#4def529adefde8ba2c2046fbfb189200" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4def529adefde8ba2c2046fbfb189200" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">salutation</span>": <span class="hljs-value"><span class="hljs-string">"Ms."</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"Jane"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jane@4yopping.com"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"597-519-8728"</span></span>,
+    "<span class="hljs-attribute">mobile</span>": <span class="hljs-value"><span class="hljs-string">"(661) 020-1557"</span></span>,
+    "<span class="hljs-attribute">shipping_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">billing_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Margie Squares"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"North Joanny"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Alabama"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"53253"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Guadeloupe"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="customers-customer-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Customer</span></div><div style="float:left"><a href="#customers-customer-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/customers/{id}</code></div></div><div class="panel-body"><p>Delete a specific Customer.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#803dcf19e2b64a7c89005be0d19b0af3" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="803dcf19e2b64a7c89005be0d19b0af3" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="employees">Employees&nbsp;<a href="#employees"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="employees-employees">Employees&nbsp;<a href="#employees-employees"><i class="fa fa-link"></i></a></h4><p>A collection of employees.</p>
+<section id="employees-employees-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create an Employee</span></div><div style="float:left"><a href="#employees-employees-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/employees</code></div></div><div class="panel-body"><p>Create a new Employee object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#f2326b4b8253a435a01a2da0f85f8dbf" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f2326b4b8253a435a01a2da0f85f8dbf" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#06da80b56c66bc0a9e08f106f4b6245e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="06da80b56c66bc0a9e08f106f4b6245e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-employees-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Employees</span></div><div style="float:left"><a href="#employees-employees-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/employees</code></div></div><div class="panel-body"><p>Retrieves all employees.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#e6bb096a665f9329240b176b7e925886" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e6bb096a665f9329240b176b7e925886" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+        "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+        "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="employees-employee">Employee&nbsp;<a href="#employees-employee"><i class="fa fa-link"></i></a></h4><section id="employees-employee-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve an Employee</span></div><div style="float:left"><a href="#employees-employee-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/employees/{id}</code></div></div><div class="panel-body"><p>Returns a specific Employee.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#9ab73dea71f0f475d07dda0e2d3d0bfb" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9ab73dea71f0f475d07dda0e2d3d0bfb" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-employee-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update an Employee</span></div><div style="float:left"><a href="#employees-employee-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/employees/{id}</code></div></div><div class="panel-body"><p>Update a specific Employee.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#9739919bb6c10289e065270c57ff8b43" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9739919bb6c10289e065270c57ff8b43" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#500160f41d6398be6ad8594b7f5bd089" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="500160f41d6398be6ad8594b7f5bd089" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"Picker"</span></span>,
+    "<span class="hljs-attribute">firstname</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastname</span>": <span class="hljs-value"><span class="hljs-string">"Doe"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-employee-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete an Employee</span></div><div style="float:left"><a href="#employees-employee-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/employees/{id}</code></div></div><div class="panel-body"><p>Delete a specific Employee.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#9f2a70cb39908c645e9eb1541962055f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9f2a70cb39908c645e9eb1541962055f" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section><h4 id="employees-items">Items&nbsp;<a href="#employees-items"><i class="fa fa-link"></i></a></h4><p>A collection of items.</p>
+<section id="employees-items-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create an Item</span></div><div style="float:left"><a href="#employees-items-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/items</code></div></div><div class="panel-body"><p>Create a new Item object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#567cd828c09fa1a7ad2980343d84cf10" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="567cd828c09fa1a7ad2980343d84cf10" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+    "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#c860eca1bbf74bf87b20a9d38a09ff1c" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c860eca1bbf74bf87b20a9d38a09ff1c" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+    "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-items-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Items</span></div><div style="float:left"><a href="#employees-items-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/items</code></div></div><div class="panel-body"><p>Retrieves all items.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#e7517bb5f854f43c44999ccfe630a3ab" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e7517bb5f854f43c44999ccfe630a3ab" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+            "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+            "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+        "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+        "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="employees-item">Item&nbsp;<a href="#employees-item"><i class="fa fa-link"></i></a></h4><section id="employees-item-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve an Item</span></div><div style="float:left"><a href="#employees-item-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Returns a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#9ac5360b719493931059d18afa388184" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9ac5360b719493931059d18afa388184" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+    "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-item-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update an Item</span></div><div style="float:left"><a href="#employees-item-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Update a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#d0e1e8ee1b3aa942ce638fb2bbf72f72" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d0e1e8ee1b3aa942ce638fb2bbf72f72" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+    "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#feeef5007426063b3d80a3a2b40411b2" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="feeef5007426063b3d80a3a2b40411b2" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"E"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"6"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">picked_list</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e238"</span></span>,
+    "<span class="hljs-attribute">picked_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">store_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="employees-item-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete an Item</span></div><div style="float:left"><a href="#employees-item-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Delete a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#f989627d8014974b54032549e210da63" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f989627d8014974b54032549e210da63" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="undefined"></span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="orders">Orders&nbsp;<a href="#orders"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><p>Orders to pick or store</p>
+<h4 id="orders-orders">Orders&nbsp;<a href="#orders-orders"><i class="fa fa-link"></i></a></h4><p>A collection of orders.</p>
+<section id="orders-orders-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create an Order</span></div><div style="float:left"><a href="#orders-orders-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/orders</code></div></div><div class="panel-body"><p>Create a new Order object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#699eb2ba63e1c5db68df19f203407050" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="699eb2ba63e1c5db68df19f203407050" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#e917662bfb8a06badea97e22cb31a456" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e917662bfb8a06badea97e22cb31a456" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="orders-orders-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Orders</span></div><div style="float:left"><a href="#orders-orders-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/orders</code></div></div><div class="panel-body"><p>Retrieves all orders.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#f7d01988959a621f1b16d3d0051ee38c" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f7d01988959a621f1b16d3d0051ee38c" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from picklist"</span></span>,
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"pick"</span></span>,
+        "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+        "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Progress"</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"store"</span></span>,
+        "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Store items from vendor"</span></span>,
+        "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+        "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+        "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+        "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+        "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="orders-order">Order&nbsp;<a href="#orders-order"><i class="fa fa-link"></i></a></h4><section id="orders-order-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve an Order</span></div><div style="float:left"><a href="#orders-order-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/orders/{id}</code></div></div><div class="panel-body"><p>Returns a specific Order.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#acd83e4081b9913188e14315c71f0c7d" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="acd83e4081b9913188e14315c71f0c7d" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="orders-order-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update an Order</span></div><div style="float:left"><a href="#orders-order-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/orders/{id}</code></div></div><div class="panel-body"><p>Update a specific Order.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#f52ea5043d73fd5f07ccbd7d1c6c049e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f52ea5043d73fd5f07ccbd7d1c6c049e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#05e88fd995f0ad8a8b8831bd8bbbe08f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="05e88fd995f0ad8a8b8831bd8bbbe08f" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"crossdock"</span></span>,
+    "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"Pick items from vendor"</span></span>,
+    "<span class="hljs-attribute">assigned_to</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Completed"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="orders-order-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete an Order</span></div><div style="float:left"><a href="#orders-order-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/orders/{id}</code></div></div><div class="panel-body"><p>Delete a specific Order.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#18133d7a9a9c11074d77e1816dfecf26" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="18133d7a9a9c11074d77e1816dfecf26" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="picklists">Picklists&nbsp;<a href="#picklists"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><p>Picklists to be shipped</p>
+<h4 id="picklists-picklists">Picklists&nbsp;<a href="#picklists-picklists"><i class="fa fa-link"></i></a></h4><p>A collection of picklists.</p>
+<section id="picklists-picklists-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Picklist</span></div><div style="float:left"><a href="#picklists-picklists-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/picklists</code></div></div><div class="panel-body"><p>Create a new Picklist object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#f7890d1fd23f3515238f66deeb0b8b4e" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f7890d1fd23f3515238f66deeb0b8b4e" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+    "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+        <span class="hljs-string">"552edf267e44bf474285e231"</span>
+    ]</span>,
+    "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+    "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#ea3b781602b499e77c3928347ceb51e7" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="ea3b781602b499e77c3928347ceb51e7" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+    "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+        <span class="hljs-string">"552edf267e44bf474285e231"</span>
+    ]</span>,
+    "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+    "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="picklists-picklists-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Picklists</span></div><div style="float:left"><a href="#picklists-picklists-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/picklists</code></div></div><div class="panel-body"><p>Retrieves all picklists.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#95023f4c505ebfa30cc960f5f4e8773d" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="95023f4c505ebfa30cc960f5f4e8773d" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+        "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+            "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+            "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+        "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+            "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+            "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+            <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+            "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+        "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+        "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+            <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+            <span class="hljs-string">"552edf267e44bf474285e231"</span>
+        ]</span>,
+        "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+        "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+        "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="picklists-picklist">Picklist&nbsp;<a href="#picklists-picklist"><i class="fa fa-link"></i></a></h4><section id="picklists-picklist-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Picklist</span></div><div style="float:left"><a href="#picklists-picklist-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/picklists/{id}</code></div></div><div class="panel-body"><p>Returns a specific Picklist.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#51eb574f592838e6141bef4ec1dc2958" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="51eb574f592838e6141bef4ec1dc2958" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+    "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+        <span class="hljs-string">"552edf267e44bf474285e231"</span>
+    ]</span>,
+    "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+    "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="picklists-picklist-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Picklist</span></div><div style="float:left"><a href="#picklists-picklist-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/picklists/{id}</code></div></div><div class="panel-body"><p>Update a specific Picklist.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#b9553354daa3783de7ee62c46768eca8" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b9553354daa3783de7ee62c46768eca8" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+    "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+        <span class="hljs-string">"552edf267e44bf474285e231"</span>
+    ]</span>,
+    "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+    "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#9dbf4a11bd7c3d9308359545e7d57b0f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="9dbf4a11bd7c3d9308359545e7d57b0f" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">customer</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">zone</span>": <span class="hljs-value"><span class="hljs-string">"B"</span></span>,
+        "<span class="hljs-attribute">row</span>": <span class="hljs-value"><span class="hljs-string">"A"</span></span>,
+        "<span class="hljs-attribute">bay</span>": <span class="hljs-value"><span class="hljs-string">"3"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tracking_number</span>": <span class="hljs-value"><span class="hljs-string">"ABCDEF54321"</span></span>,
+    "<span class="hljs-attribute">deliver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">total_items</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">total_picked</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">line_items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552edf267e44bf474285e230"</span>,
+        <span class="hljs-string">"552edf267e44bf474285e231"</span>
+    ]</span>,
+    "<span class="hljs-attribute">invoiced</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"Picking"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Thank you for your purchase"</span></span>,
+    "<span class="hljs-attribute">shipped_at</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="picklists-picklist-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Picklist</span></div><div style="float:left"><a href="#picklists-picklist-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/picklists/{id}</code></div></div><div class="panel-body"><p>Delete a specific Picklist.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#60035a9a78ec5ca952f9788231f050ef" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="60035a9a78ec5ca952f9788231f050ef" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="products">Products&nbsp;<a href="#products"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><p>Organize products on different warehouses</p>
+<h4 id="products-products">Products&nbsp;<a href="#products-products"><i class="fa fa-link"></i></a></h4><p>A collection of products.</p>
+<section id="products-products-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Product</span></div><div style="float:left"><a href="#products-products-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/products</code></div></div><div class="panel-body"><p>Create a new Product object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#12911082dc644b13d2dd01987f681217" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="12911082dc644b13d2dd01987f681217" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+    "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+    "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#b642898d0489389900b341fe1715131f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b642898d0489389900b341fe1715131f" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+    "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+    "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-products-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Products</span></div><div style="float:left"><a href="#products-products-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/products</code></div></div><div class="panel-body"><p>Retrieves all products.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#44bb3f942a90409b7fd1b43883e96d12" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="44bb3f942a90409b7fd1b43883e96d12" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+        "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+        "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+        "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+            {
+                "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+                "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+                "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+            </span>},
+            {
+                "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+                "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+                "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+            </span>}
+        ]</span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="products-product">Product&nbsp;<a href="#products-product"><i class="fa fa-link"></i></a></h4><section id="products-product-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Product</span></div><div style="float:left"><a href="#products-product-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Returns a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#126176f290cbe4d2e0b0f5755d904ab0" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="126176f290cbe4d2e0b0f5755d904ab0" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+    "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+    "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-product-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Product</span></div><div style="float:left"><a href="#products-product-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Update a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#e64a5aefa53df0517e3335f3314d675d" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e64a5aefa53df0517e3335f3314d675d" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+    "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+    "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d2997030462c42b09cf7b2704b39f75a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d2997030462c42b09cf7b2704b39f75a" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e229"</span></span>,
+    "<span class="hljs-attribute">product_name</span>": <span class="hljs-value"><span class="hljs-string">"Diaper bag"</span></span>,
+    "<span class="hljs-attribute">product_number</span>": <span class="hljs-value"><span class="hljs-string">"19829898918927821"</span></span>,
+    "<span class="hljs-attribute">stock</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e230"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">100</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">warehouse</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e231"</span></span>,
+            "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">200</span></span>,
+            "<span class="hljs-attribute">on_picklist</span>": <span class="hljs-value"><span class="hljs-number">20</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="products-product-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Product</span></div><div style="float:left"><a href="#products-product-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/products/{id}</code></div></div><div class="panel-body"><p>Delete a specific Product.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#aebb06f978fe27743c0bd462e69cf67a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="aebb06f978fe27743c0bd462e69cf67a" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="warehouses">Warehouses&nbsp;<a href="#warehouses"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><p>Location of Warehouses</p>
+<h4 id="warehouses-warehouses">Warehouses&nbsp;<a href="#warehouses-warehouses"><i class="fa fa-link"></i></a></h4><p>A collection of warehouses.</p>
+<section id="warehouses-warehouses-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Warehouse</span></div><div style="float:left"><a href="#warehouses-warehouses-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/warehouses</code></div></div><div class="panel-body"><p>Create a new Warehouse object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#fe66e0ce2b68ac17769076ba62aadebc" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="fe66e0ce2b68ac17769076ba62aadebc" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+    <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#95bf4d2921638134b751efde5973cbdb" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="95bf4d2921638134b751efde5973cbdb" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+    <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="warehouses-warehouses-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Warehouses</span></div><div style="float:left"><a href="#warehouses-warehouses-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/warehouses</code></div></div><div class="panel-body"><p>Retrieves all warehouses.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#856518f2c23bdc9905d25854435fa8b7" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="856518f2c23bdc9905d25854435fa8b7" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+    {
+        "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+        "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+        <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+        "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+        "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+    </span>}
+]
+</code></pre></li></ul></section><h4 id="warehouses-warehouse">Warehouse&nbsp;<a href="#warehouses-warehouse"><i class="fa fa-link"></i></a></h4><section id="warehouses-warehouse-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Warehouse</span></div><div style="float:left"><a href="#warehouses-warehouse-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/warehouses/{id}</code></div></div><div class="panel-body"><p>Returns a specific Warehouse.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#fed81ed903e68727497a52b613564078" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="fed81ed903e68727497a52b613564078" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+    <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="warehouses-warehouse-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Warehouse</span></div><div style="float:left"><a href="#warehouses-warehouse-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/warehouses/{id}</code></div></div><div class="panel-body"><p>Update a specific Warehouse.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#8a77f11fa6407604e7a825cb4f9c2818" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8a77f11fa6407604e7a825cb4f9c2818" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+    <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#007fed5ad11f750e31dbfa2c469fcc32" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="007fed5ad11f750e31dbfa2c469fcc32" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552edf267e44bf474285e228"</span></span>,
+    "<span class="hljs-attribute">warehouse_name</span>": <span class="hljs-value"><span class="hljs-string">"Warehouse West"</span></span>,
+    "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Luna Glen"</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Beckerfurt"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Idaho"</span>
+    <span class="hljs-string">"zip"</span>: <span class="hljs-string">"93745"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Virgin Islands, British"</span></span>,
+    "<span class="hljs-attribute">active</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Wed Apr 15 2015 16:58:08 GMT-0500 (CDT)"</span>
+</span>}
+</code></pre></li></ul></section><section id="warehouses-warehouse-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Warehouse</span></div><div style="float:left"><a href="#warehouses-warehouse-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/warehouses/{id}</code></div></div><div class="panel-body"><p>Delete a specific Warehouse.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong></li></ul></section></div></div></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 15 Apr 2015</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
+
+</div></body><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script>(function() {
+  if (location.protocol === 'file:') {
+    document.getElementById('localFile').style.display = 'block';
+  }
+
+}).call(this);
+</script><script>(function() {
+  $('table').addClass('table');
+
+}).call(this);
+</script></html>

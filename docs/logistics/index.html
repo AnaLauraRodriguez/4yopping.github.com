@@ -1,0 +1,747 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Logistics Façade</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme Tomorrow */
+.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}</style><style>body,
+h4,
+h5 {
+  font-family: 'Roboto' sans-serif !important;
+}
+h1,
+h2,
+h3,
+.aglio {
+  font-family: 'Raleway' sans-serif !important;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  display: none;
+}
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a,
+h5:hover a {
+  display: inline;
+}
+code {
+  color: #444;
+  background-color: #ddd;
+  font-family: 'Inconsolata' monospace !important;
+}
+a[data-target] {
+  cursor: pointer;
+}
+h4 {
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.back-to-top {
+  position: fixed;
+  z-index: 1;
+  bottom: 0px;
+  right: 24px;
+  padding: 4px 8px;
+  background-color: #eee;
+  text-decoration: none !important;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.panel {
+  overflow: hidden;
+}
+.panel-heading code {
+  margin-left: 3px;
+  color: #c7254e;
+  background-color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.panel-heading h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+a.list-group-item:hover {
+  background-color: #f8f8f8;
+  border-left: 2px solid #555;
+  padding-left: 15px;
+}
+.indent {
+  display: block;
+  text-indent: 16px;
+}
+.list-group-item {
+  padding-left: 16px;
+}
+.list-group-item .toggle .open {
+  display: block;
+}
+.list-group-item .toggle .closed {
+  display: none;
+}
+.list-group-item.collapsed .toggle .open {
+  display: none;
+}
+.list-group-item.collapsed .toggle .closed {
+  display: block;
+}
+a.list-group-item {
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+a.list-group-item.heading {
+  font-size: 15px;
+  background-color: #f5f5f5;
+}
+a.list-group-item.heading:hover {
+  background-color: #f8f8f8;
+}
+.list-group-item.collapse {
+  display: none;
+}
+.list-group-item.collapse.in {
+  display: block;
+}
+.list-group-item a span.closed {
+  display: none;
+}
+.list-group-item a span.open {
+  display: block;
+}
+.list-group-item a.collapsed span.closed {
+  display: block;
+}
+.list-group-item a.collapsed span.open {
+  display: none;
+}
+#nav {
+  width: inherit;
+  margin-top: 38px;
+  max-width: 255px;
+  top: 0;
+  bottom: 0;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+@media (max-width: 1199px) {
+  #nav {
+    max-width: 212px;
+  }
+}
+</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container-fluid"><div class="row"><div class="col-md-3"><nav id="nav" class="hidden-sm hidden-xs affix nav"><div class="list-group"><a data-toggle="collapse" data-target="#carriers-menu" href="#carriers" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Carriers</a><div id="carriers-menu" class="collapse"><a href="#carriers-carriers" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Carriers</a><a href="#carriers-carriers-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Carrier</span></a><a href="#carriers-carriers-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Carriers</span></a><a href="#carriers-carrier" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Carrier</a><a href="#carriers-carrier-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Carrier</span></a><a href="#carriers-carrier-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Carrier</span></a><a href="#carriers-carrier-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Carrier</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#items-menu" href="#items" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Items</a><div id="items-menu" class="collapse"><a href="#items-items" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Items</a><a href="#items-items-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create an Item</span></a><a href="#items-items-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Items</span></a><a href="#items-item" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Item</a><a href="#items-item-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve an Item</span></a><a href="#items-item-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update an Item</span></a><a href="#items-item-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete an Item</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#quotes-menu" href="#quotes" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Quotes</a><div id="quotes-menu" class="collapse"><a href="#quotes-quotes" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Quotes</a><a href="#quotes-quotes-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Quote</span></a><a href="#quotes-quotes-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Quotes</span></a><a href="#quotes-quote" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Quote</a><a href="#quotes-quote-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Quote</span></a><a href="#quotes-quote-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Quote</span></a><a href="#quotes-quote-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Quote</span></a></div></div><div class="list-group"><a data-toggle="collapse" data-target="#shipment-menu" href="#shipment" class="list-group-item heading collapsed"><span class="toggle pull-right"><span class="open fa fa-angle-down"></span><span class="closed fa fa-angle-right"></span></span>Shipment</a><div id="shipment-menu" class="collapse"><a href="#shipment-shipments" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Shipments</a><a href="#shipment-shipments-post" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-success"><i class="fa fa-plus"></i></span><span class="indent">Create a Shipment</span></a><a href="#shipment-shipments-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve all Shipments</span></a><a href="#shipment-shipment" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item">Shipment</a><a href="#shipment-shipment-get" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span><span class="indent">Retrieve a Shipment</span></a><a href="#shipment-shipment-put" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-warning"><i class="fa fa-pencil"></i></span><span class="indent">Update a Shipment</span></a><a href="#shipment-shipment-delete" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-danger"><i class="fa fa-times"></i></span><span class="indent">Delete a Shipment</span></a></div></div></nav></div><div class="col-md-8"><div><header><div class="page-header"><h1 id="top">Logistics Façade</h1></div></header><div class="description"><p>Façade API built for connect to an <strong>Operational Controller Bridge</strong> without affecting its procedures and methods.</p>
+<h2>Navigate</h2>
+<ul>
+<li><p><a href="carriers.md">This: Carriers</a></p></li>
+<li><p><a href="items.md">Next: Items</a></p></li>
+</ul>
+</div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="carriers">Carriers&nbsp;<a href="#carriers"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="carriers-carriers">Carriers&nbsp;<a href="#carriers-carriers"><i class="fa fa-link"></i></a></h4><p>A collection of carriers.</p>
+<section id="carriers-carriers-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Carrier</span></div><div style="float:left"><a href="#carriers-carriers-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/carriers</code></div></div><div class="panel-body"><p>Create a new Carrier object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#f54cc6cd55831fd5bc2d1fad18360031" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f54cc6cd55831fd5bc2d1fad18360031" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#4af2f3ecba9ea0083470ba65896addb9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4af2f3ecba9ea0083470ba65896addb9" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="carriers-carriers-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Carriers</span></div><div style="float:left"><a href="#carriers-carriers-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/carriers</code></div></div><div class="panel-body"><p>Retrieves all carriers.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#85ac14d3eea4155c8c5a8a3f1ccc7ec6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="85ac14d3eea4155c8c5a8a3f1ccc7ec6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="carriers-carrier">Carrier&nbsp;<a href="#carriers-carrier"><i class="fa fa-link"></i></a></h4><section id="carriers-carrier-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Carrier</span></div><div style="float:left"><a href="#carriers-carrier-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/carriers/{id}</code></div></div><div class="panel-body"><p>Returns a specific Carrier.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#91d9f63927ed0b9d53c1fe93eeb4f852" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="91d9f63927ed0b9d53c1fe93eeb4f852" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="carriers-carrier-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Carrier</span></div><div style="float:left"><a href="#carriers-carrier-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/carriers/{id}</code></div></div><div class="panel-body"><p>Update a specific Carrier.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#97def62358621883819aa7ea97471484" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="97def62358621883819aa7ea97471484" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#26f76b5ff3a8c63ce6e30dd6b101a819" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="26f76b5ff3a8c63ce6e30dd6b101a819" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">carrier_name</span>": <span class="hljs-value"><span class="hljs-string">"FedEx"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        <span class="hljs-string">"552c5775ea64558f06cfdf1c"</span>,
+        <span class="hljs-string">"552c577aea64558f06cfdf20"</span>,
+        <span class="hljs-string">"552c579bea64558f06cfdf2c"</span>,
+        <span class="hljs-string">"552c57a4ea64558f06cfdf39"</span>
+    ]</span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="carriers-carrier-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Carrier</span></div><div style="float:left"><a href="#carriers-carrier-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/carriers/{id}</code></div></div><div class="panel-body"><p>Delete a specific Carrier.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#7f6634f6833917d9aa7babe76d6b3317" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7f6634f6833917d9aa7babe76d6b3317" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="items">Items&nbsp;<a href="#items"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="items-items">Items&nbsp;<a href="#items-items"><i class="fa fa-link"></i></a></h4><p>A collection of items.</p>
+<section id="items-items-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create an Item</span></div><div style="float:left"><a href="#items-items-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/items</code></div></div><div class="panel-body"><p>Create a new Item object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#d14426482e765c5d9e3d4039f2397f75" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d14426482e765c5d9e3d4039f2397f75" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#8f073fbbbb70703f0d605c931092ff7a" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8f073fbbbb70703f0d605c931092ff7a" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="items-items-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Items</span></div><div style="float:left"><a href="#items-items-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/items</code></div></div><div class="panel-body"><p>Retrieves all items.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#7e50eb2f237ed2d67708edb48d4d3542" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7e50eb2f237ed2d67708edb48d4d3542" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="items-item">Item&nbsp;<a href="#items-item"><i class="fa fa-link"></i></a></h4><section id="items-item-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve an Item</span></div><div style="float:left"><a href="#items-item-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Returns a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#8ad28f885126c416db298caaf6e563e5" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8ad28f885126c416db298caaf6e563e5" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="items-item-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update an Item</span></div><div style="float:left"><a href="#items-item-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Update a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#095ed16c78709ab683c0792e9d588672" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="095ed16c78709ab683c0792e9d588672" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#a73f8fb3eb49c7651d88a3fb178d15a5" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a73f8fb3eb49c7651d88a3fb178d15a5" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-string">"1.5kg"</span></span>,
+    "<span class="hljs-attribute">lenght</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">height</span>": <span class="hljs-value"><span class="hljs-string">"25cm"</span></span>,
+    "<span class="hljs-attribute">width</span>": <span class="hljs-value"><span class="hljs-string">"5cm"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="items-item-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete an Item</span></div><div style="float:left"><a href="#items-item-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/items/{id}</code></div></div><div class="panel-body"><p>Delete a specific Item.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#746b965a2b29ddf581f3655ac6f317b9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="746b965a2b29ddf581f3655ac6f317b9" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="applescript">Façade API built <span class="hljs-keyword">for</span> connect <span class="hljs-keyword">to</span> an **Operational Controller Bridge** <span class="hljs-keyword">without</span> affecting <span class="hljs-keyword">its</span> procedures <span class="hljs-keyword">and</span> methods.
+
+</span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="quotes">Quotes&nbsp;<a href="#quotes"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="quotes-quotes">Quotes&nbsp;<a href="#quotes-quotes"><i class="fa fa-link"></i></a></h4><p>A collection of quotes.</p>
+<section id="quotes-quotes-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Quote</span></div><div style="float:left"><a href="#quotes-quotes-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/quotes</code></div></div><div class="panel-body"><p>Create a new Quote object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#c9318b0a3f8fa3e94d4fb5ad2dff5a75" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c9318b0a3f8fa3e94d4fb5ad2dff5a75" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#0b15feee94d67bc81bec4cd32a598b43" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="0b15feee94d67bc81bec4cd32a598b43" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quotes-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Quotes</span></div><div style="float:left"><a href="#quotes-quotes-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/quotes</code></div></div><div class="panel-body"><p>Retrieves all quotes.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#d876b3fd63e79b154fd139a371353da7" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="d876b3fd63e79b154fd139a371353da7" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="quotes-quote">Quote&nbsp;<a href="#quotes-quote"><i class="fa fa-link"></i></a></h4><section id="quotes-quote-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Quote</span></div><div style="float:left"><a href="#quotes-quote-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Returns a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#f5145bfca1a45de6726db12327d0aa41" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="f5145bfca1a45de6726db12327d0aa41" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quote-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Quote</span></div><div style="float:left"><a href="#quotes-quote-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Update a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#a80675741fd1f9222ed122c65c624483" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="a80675741fd1f9222ed122c65c624483" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#1db0a6c473677af23051a070a9aef0ce" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="1db0a6c473677af23051a070a9aef0ce" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">carrier</span>": <span class="hljs-value"><span class="hljs-string">"552c57a3ea64558f06cfdf36"</span></span>,
+    "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c110"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">10.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">10.0</span>
+        </span>},
+        {
+          "<span class="hljs-attribute">item_id</span>": <span class="hljs-value"><span class="hljs-string">"552311f1fa8d5c150d13c111"</span></span>,
+          "<span class="hljs-attribute">unit_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">quantity</span>": <span class="hljs-value"><span class="hljs-number">2.0</span></span>,
+          "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span></span>,
+          "<span class="hljs-attribute">list_price</span>": <span class="hljs-value"><span class="hljs-number">20.0</span></span>,
+          "<span class="hljs-attribute">net_total</span>": <span class="hljs-value"><span class="hljs-number">40.0</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Lorem ipsum dolor sit amet"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="quotes-quote-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Quote</span></div><div style="float:left"><a href="#quotes-quote-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/quotes/{id}</code></div></div><div class="panel-body"><p>Delete a specific Quote.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong><a data-toggle="collapse" data-target="#b9a1cc6dd1326a9b7d623981c196cd9f" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="b9a1cc6dd1326a9b7d623981c196cd9f" class="list-group-item panel-collapse collapse"><h5>Body</h5><pre><code><span class="hljs-attribute">FORMAT</span>: <span class="hljs-string">1A</span>
+
+<span class="undefined"></span></code></pre></li></ul></section></div></div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="shipment">Shipment&nbsp;<a href="#shipment"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="shipment-shipments">Shipments&nbsp;<a href="#shipment-shipments"><i class="fa fa-link"></i></a></h4><p>A collection of shipments.</p>
+<section id="shipment-shipments-post" class="panel panel-success"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Create a Shipment</span></div><div style="float:left"><a href="#shipment-shipments-post" class="btn btn-xs btn-success">POST</a></div><div style="overflow:hidden"><code>/shipments</code></div></div><div class="panel-body"><p>Create a new Shipment object.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#4c9d444deb4a863f885dc4a9a1a51af6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4c9d444deb4a863f885dc4a9a1a51af6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>201</code></strong><a data-toggle="collapse" data-target="#610878c7121434bb2d06d401b2651c64" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="610878c7121434bb2d06d401b2651c64" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="shipment-shipments-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve all Shipments</span></div><div style="float:left"><a href="#shipment-shipments-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/shipments</code></div></div><div class="panel-body"><p>Retrieves all shipments.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#8a2a47c74198cfed8247ac5f39f9fca9" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="8a2a47c74198cfed8247ac5f39f9fca9" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+  </span>}
+]
+</code></pre></li></ul></section><h4 id="shipment-shipment">Shipment&nbsp;<a href="#shipment-shipment"><i class="fa fa-link"></i></a></h4><section id="shipment-shipment-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a Shipment</span></div><div style="float:left"><a href="#shipment-shipment-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/shipments/{id}</code></div></div><div class="panel-body"><p>Returns a specific Shipment.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#e51e77edd13f96301a63f9ad9287a2b8" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e51e77edd13f96301a63f9ad9287a2b8" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="shipment-shipment-put" class="panel panel-warning"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Update a Shipment</span></div><div style="float:left"><a href="#shipment-shipment-put" class="btn btn-xs btn-warning">PUT</a></div><div style="overflow:hidden"><code>/shipments/{id}</code></div></div><div class="panel-body"><p>Update a specific Shipment.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Request</strong><a data-toggle="collapse" data-target="#e7c883354db76bc97936daed00364813" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="e7c883354db76bc97936daed00364813" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#2ec52e88456f857a3a38c2313aaa9701" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2ec52e88456f857a3a38c2313aaa9701" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">_id</span>": <span class="hljs-value"><span class="hljs-string">"55241c55fa8d5c150d13c12d"</span></span>,
+    "<span class="hljs-attribute">quote</span>": <span class="hljs-value"><span class="hljs-string">"552c5d03ea64558f06cfdf4f"</span></span>,
+    "<span class="hljs-attribute">tracking_code</span>": <span class="hljs-value"><span class="hljs-string">"EE00MDJS0909"</span></span>,
+    "<span class="hljs-attribute">sender_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Kirlin Neck"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"East Erica"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Georgia"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"74205"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"Jordan"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">receiver_address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">street</span>": <span class="hljs-value"><span class="hljs-string">"Leffler Unions"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Lake Jonatan"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"Louisiana"</span></span>,
+        "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"60579"</span></span>,
+        "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"United States of America"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">current_position</span>": <span class="hljs-value">[<span class="hljs-string">"19.4120362"</span>, <span class="hljs-string">"-99.18064319999996"</span>]</span>,
+    "<span class="hljs-attribute">events</span>": <span class="hljs-value">[
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Picked Up"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 10 2015 15:30:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"At local FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 19:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Departed FedEx location"</span>
+        </span>},
+        {
+            "<span class="hljs-attribute">date</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 11 2015 20:00:00 GMT-0600 (CST)"</span></span>,
+            "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span>
+        </span>}
+    ]</span>,
+    "<span class="hljs-attribute">rate</span>": <span class="hljs-value"><span class="hljs-string">"50.00"</span></span>,
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"In transit"</span></span>,
+    "<span class="hljs-attribute">comments</span>": <span class="hljs-value"><span class="hljs-string">"Laborum sed aut voluptas ullam fugit doloribus."</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:00:00 GMT-0600 (CST)"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"Mon Apr 09 2015 12:15:00 GMT-0600 (CST)"</span>
+</span>}
+</code></pre></li></ul></section><section id="shipment-shipment-delete" class="panel panel-danger"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Delete a Shipment</span></div><div style="float:left"><a href="#shipment-shipment-delete" class="btn btn-xs btn-danger">DELETE</a></div><div style="overflow:hidden"><code>/shipments/{id}</code></div></div><div class="panel-body"><p>Delete a specific Shipment.</p>
+</div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>204</code></strong></li></ul></section></div></div></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 15 Apr 2015</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
+
+</div></body><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script>(function() {
+  if (location.protocol === 'file:') {
+    document.getElementById('localFile').style.display = 'block';
+  }
+
+}).call(this);
+</script><script>(function() {
+  $('table').addClass('table');
+
+}).call(this);
+</script></html>
